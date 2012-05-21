@@ -272,10 +272,10 @@ class SecureCategories
 
 		$out = (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://";
 		if ($_SERVER["SERVER_PORT"] != "80")
-		    $out .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+		    $out .= "$_SERVER[SERVER_NAME]:$_SERVER[SERVER_PORT]$_SERVER[REQUEST_URI]";
 
 		else 
-		    $out .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+		    $out .= "$_SERVER[SERVER_NAME]$_SERVER[REQUEST_URI]";
 
 		return $out;
 	}
