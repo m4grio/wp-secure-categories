@@ -180,7 +180,7 @@ class SecureCategories
 		 * Check if the current viisitor is logged in
 		 */
 		if ( ! is_user_logged_in())
-			wp_redirect('/wp-login.php?redirect_to=' . urlencode(get_permalink($post->ID)) . '&reauth=1');
+			wp_redirect('/wp-login.php?redirect_to=' . urlencode(self::current_url()) . '&reauth=1');
 	}
 
 
@@ -254,6 +254,30 @@ class SecureCategories
 		 * If it is other scenario, just let it go
 		 */
 		return false;
+	}
+
+	/**
+	 * Get the current url
+	 *
+	 * @static
+	 * @return string
+	 */
+	public static function current_url ()
+	{
+		/**
+		 * The first attempt on PATH_INFO, then construct the string
+		 */
+		if (isset($_SERVER['PATH_INFO']) and (bool) strlen($_SERVER['PATH_INFO']))
+			return $_SERVER['PATH_INFO'];
+
+		$out = (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://";
+		if ($_SERVER["SERVER_PORT"] != "80")
+		    $out .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+
+		else 
+		    $out .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+
+		return $out;
 	}
 
 }
